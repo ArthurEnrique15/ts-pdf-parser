@@ -17,6 +17,22 @@ class InvoiceController {
 
     return response.json(invoices)
   }
+
+  async downloadFile(request: Request, response: Response) {
+    const { id } = request.headers
+
+    if (!id) {
+      return response.status(400).json({ error: 'ID não informado.' })
+    }
+
+    const filePath = await InvoiceService.downloadFile(id.toString())
+
+    if (!filePath) {
+      return response.status(404).json({ error: 'Nota fiscal não encontrada.' })
+    }
+
+    return response.sendFile(filePath)
+  }
 }
 
 export default new InvoiceController()

@@ -8,5 +8,6 @@ const upload = multer()
 
 router.post('/', upload.single('pdfFile'), InvoiceController.create)
 router.get('/', InvoiceController.findAll)
+router.get('/download', InvoiceController.downloadFile)
 
 export { router }

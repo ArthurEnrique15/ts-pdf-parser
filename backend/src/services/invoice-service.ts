@@ -56,6 +56,21 @@ class InvoiceService {
 
     return invoices
   }
+
+  async downloadFile(id: string): Promise<string | null> {
+    const invoice = await this.prismaClient.invoice.findUnique({ where: { id } })
+
+    if (!invoice) {
+      throw new Error('Nota fiscal não encontrada.')
+    }
+
+    try {
+      fs.accessSync(path.join(__dirname, `../tmp/${invoice.id}.pdf`))
+      return path.join(__dirname, `../tmp/${invoice.id}.pdf`)
+    } catch (err) {
+      return null
+    }
+  }
 }
 
 export default new InvoiceService()
