@@ -1,4 +1,6 @@
 import { Invoice, PrismaClient } from '@prisma/client'
+import fs from 'fs'
+import path from 'path'
 import PdfParser from '../helpers/pdf-parser'
 import InvoiceFormatter from '../helpers/invoice-formatter'
 
@@ -43,6 +45,8 @@ class InvoiceService {
         valor_total,
       },
     })
+
+    fs.appendFileSync(path.join(__dirname, `../tmp/${invoice.id}.pdf`), buffer)
 
     return invoice
   }
