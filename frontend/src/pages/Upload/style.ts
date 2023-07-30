@@ -32,5 +32,9 @@ export const UploadContainer = styled.div`
       border: 1px solid ${({ theme }) => theme.blue};
       color: ${({ theme }) => theme.blue};
     }
+
+    &:disabled {
+      opacity: 0.5;
+    }
   }
 `
