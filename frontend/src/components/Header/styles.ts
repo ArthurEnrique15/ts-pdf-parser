@@ -18,13 +18,16 @@ export const HeaderContainer = styled.div`
   margin-bottom: 2rem;
 `
 
-export const StyledLink = styled(Link)`
+type StyledLinkProps = {
+  active: boolean
+}
+
+export const StyledLink = styled(Link)<StyledLinkProps>`
   display: flex;
   justify-content: center;
   align-items: center;
 
   text-decoration: none;
-  color: ${(props) => props.theme.white};
 
   &:focus,
   &:hover,
@@ -36,7 +39,9 @@ export const StyledLink = styled(Link)`
 
   height: 100%;
 
-  border-bottom: 1px solid transparent;
+  color: ${({ active, theme }) => (active ? theme.blue : theme.white)};
+  border-bottom: ${({ active, theme }) =>
+    active ? `1px solid ${theme.blue}` : '1px solid transparent'};
 
   transition: 0.5s;
 
