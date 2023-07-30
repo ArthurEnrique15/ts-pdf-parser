@@ -2,7 +2,8 @@ import styled from 'styled-components'
 
 export const CardContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
 
   padding: 1rem;
@@ -16,15 +17,6 @@ export const CardContainer = styled.div`
 
   width: 20rem;
   /* height: 10rem; */
-`
-
-export const CardContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 1.5rem;
 `
 
 export const CardIconContainer = styled.div`
@@ -50,18 +42,4 @@ export const CardTextContainer = styled.div`
 export const EnergyAmountSpan = styled.span`
   font-size: 2rem;
   font-weight: 700;
-`
-
-export const FooterCard = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-
-  border-top: 1px solid ${({ theme }) => theme['base-span']};
-  padding-top: 0.5rem;
-
-  gap: 0.5rem;
-
-  font-size: 0.75rem;
 `

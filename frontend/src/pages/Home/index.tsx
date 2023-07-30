@@ -1,8 +1,14 @@
 import React, { useContext, useState } from 'react'
-import { HomeContainer, PeriodContainer } from './styles'
+import {
+  DashboardContainer,
+  HomeContainer,
+  NumbersContainer,
+  PeriodContainer,
+} from './styles'
 import { months } from '../../constants/months'
 import { InvoicesContext } from '../../contexts/InvoicesContext'
-import { Dashboard } from './Dashboard'
+import { EnergyChart } from './EnergyChart'
+import { Card } from './Card'
 
 export function Home() {
   const { getYears } = useContext(InvoicesContext)
@@ -26,8 +32,8 @@ export function Home() {
           <option disabled value="">
             Mês
           </option>
-          {months.map((month) => (
-            <option key={month} value={month}>
+          {months.map((month, index) => (
+            <option key={month} value={index + 1}>
               {month}
             </option>
           ))}
@@ -44,7 +50,28 @@ export function Home() {
           ))}
         </select>
       </PeriodContainer>
-      <Dashboard />
+
+      <DashboardContainer>
+        <NumbersContainer>
+          <Card
+            energyType="generated"
+            selectedMonth={Number(selectedMonth)}
+            selectedYear={Number(selectedYear)}
+          />
+          <Card
+            energyType="consumed"
+            selectedMonth={Number(selectedMonth)}
+            selectedYear={Number(selectedYear)}
+          />
+          <Card
+            energyType="compensated"
+            selectedMonth={Number(selectedMonth)}
+            selectedYear={Number(selectedYear)}
+          />
+        </NumbersContainer>
+
+        <EnergyChart />
+      </DashboardContainer>
     </HomeContainer>
   )
 }

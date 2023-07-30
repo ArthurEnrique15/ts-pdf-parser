@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
-import { api } from '../../../../lib/axios'
+import { api } from '../../../lib/axios'
 import { EnergyChartContainer } from './styles'
 
 type InvoiceChartData = {
@@ -17,9 +17,9 @@ export function EnergyChart() {
     const response = await api.get(`http://localhost:3333/energy-per-month`)
 
     if (response.status === 200) {
-      console.log(response.data)
+      // console.log(response.data)
       const formattedChartData = formatChartData(response.data)
-      console.log(formattedChartData)
+      // console.log(formattedChartData)
       setChartData(formattedChartData)
     }
   }, [])
