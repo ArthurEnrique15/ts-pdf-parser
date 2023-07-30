@@ -9,6 +9,9 @@ export function Header() {
       <StyledLink to="/history">
         <span>Histórico</span>
       </StyledLink>
+      <StyledLink to="/upload">
+        <span>Upload</span>
+      </StyledLink>
     </HeaderContainer>
   )
 }
