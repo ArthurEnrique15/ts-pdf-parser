@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { HomeContainer, PeriodContainer } from './styles'
 import { months } from '../../constants/months'
 import { InvoicesContext } from '../../contexts/InvoicesContext'
+import { Dashboard } from './Dashboard'
 
 export function Home() {
   const { getYears } = useContext(InvoicesContext)
@@ -43,6 +44,7 @@ export function Home() {
           ))}
         </select>
       </PeriodContainer>
+      <Dashboard />
     </HomeContainer>
   )
 }
