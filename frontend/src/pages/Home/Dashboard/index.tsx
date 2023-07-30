@@ -1,4 +1,5 @@
 import { Card } from './Card'
+import { EnergyChart } from './EnergyChart'
 import { DashboardContainer, NumbersContainer } from './styles'
 
 export function Dashboard() {
@@ -17,6 +18,8 @@ export function Dashboard() {
           percentageDiff={-27}
         />
       </NumbersContainer>
+
+      <EnergyChart />
     </DashboardContainer>
   )
 }
