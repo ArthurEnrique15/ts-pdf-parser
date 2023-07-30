@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
   InvoicesHistoryContainer,
   TableButton,
@@ -15,12 +15,20 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { months } from '../../constants/months'
 import { FilePdf } from '@phosphor-icons/react'
+import { api } from '../../lib/axios'
+
+type DownloadClickProps = {
+  id: string
+  numero_cliente: string
+  month: string
+}
 
 export function InvoicesHistory() {
   const { getYears, formatToTable } = useContext(InvoicesContext)
-  const years = getYears()
 
-  const [activeYear, setActiveYear] = useState(years[0])
+  const [activeYear, setActiveYear] = useState(0)
+
+  const years = getYears()
 
   const formattedRows = formatToTable(activeYear)
 
@@ -34,6 +42,48 @@ export function InvoicesHistory() {
       setActiveYear(newYear)
     }
   }
+
+  const handleDownloadClick = (props: DownloadClickProps) => {
+    const confirmed = window.confirm('Deseja baixar o arquivo?')
+    if (confirmed) {
+      downloadFile(props)
+    }
+  }
+
+  const downloadFile = async ({
+    id,
+    numero_cliente,
+    month,
+  }: DownloadClickProps) => {
+    try {
+      const response = await api.get('http://localhost:3333/download', {
+        headers: { id },
+        responseType: 'blob',
+      })
+
+      const blob = new Blob([response.data], { type: 'application/pdf' })
+
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+
+      link.setAttribute(
+        'download',
+        `${numero_cliente}-${month}-${activeYear}.pdf`,
+      )
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    } catch (error) {
+      console.error('Error downloading the file:', error)
+      alert('Erro ao baixar o arquivo')
+    }
+  }
+
+  useEffect(() => {
+    const years = getYears()
+    setActiveYear(years[0])
+  }, [getYears])
 
   return (
     <InvoicesHistoryContainer>
@@ -78,7 +128,15 @@ export function InvoicesHistory() {
                   return (
                     <TableCell align="center" key={month}>
                       {row[month as keyof typeof row] ? (
-                        <TableButton>
+                        <TableButton
+                          onClick={() =>
+                            handleDownloadClick({
+                              id: row[month as keyof typeof row] || '',
+                              numero_cliente: row.numero_cliente,
+                              month,
+                            })
+                          }
+                        >
                           <FilePdf size={24} />
                         </TableButton>
                       ) : (
