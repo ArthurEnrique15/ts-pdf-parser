@@ -10,7 +10,9 @@ import { api } from '../lib/axios'
 export type Invoice = {
   id: string
   numero_cliente: string
-  mes_ref: string
+  mes_ref_string: string
+  mes_ref: number
+  ano_ref: number
   data_vencimento: string
   energia_eletrica_kwh: number
   energia_eletrica_preco_unit: number
@@ -61,7 +63,6 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
   const fetchInvoices = useCallback(async () => {
     const response = await api.get(`http://localhost:3333/`)
 
-    console.log(response)
     if (response.status === 200) {
       setInvoices(response.data)
     }
@@ -73,8 +74,7 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
 
   const getYears = () => {
     const allYears = invoices.map((invoice) => {
-      const year = invoice.mes_ref.slice(4)
-      return Number(year)
+      return invoice.ano_ref
     })
 
     const uniqueYears = [...new Set(allYears)]
@@ -113,8 +113,8 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
       }
 
       invoice.forEach((invoice) => {
-        const month = invoice.mes_ref.slice(0, 3).toLowerCase()
-        const year = Number(invoice.mes_ref.slice(4))
+        const month = invoice.mes_ref_string.slice(0, 3).toLowerCase()
+        const year = invoice.ano_ref
 
         if (year === yearFilter) {
           invoiceTable[month as keyof typeof invoiceTable] = invoice.id
