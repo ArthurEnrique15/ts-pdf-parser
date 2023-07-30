@@ -48,8 +48,6 @@ export function EnergyChart() {
       return data
     })
 
-    console.log(filledData)
-
     return filledData
   }
 
