@@ -22,7 +22,9 @@ export function Home() {
     <HomeContainer>
       <PeriodContainer>
         <select value={selectedMonth} onChange={handleMonthChange}>
-          <option value="">Mês</option>
+          <option disabled value="">
+            Mês
+          </option>
           {months.map((month) => (
             <option key={month} value={month}>
               {month}
@@ -31,7 +33,9 @@ export function Home() {
         </select>
 
         <select value={selectedYear} onChange={handleYearChange}>
-          <option value="">Ano</option>
+          <option disabled value="">
+            Ano
+          </option>
           {years.map((year) => (
             <option key={year} value={year}>
               {year}
