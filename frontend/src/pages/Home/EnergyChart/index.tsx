@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../../lib/axios'
 import { EnergyChartContainer } from './styles'
+import { getLast12MonthsChartData } from '../../../utils/get-last-12-months-chart-data'
 
-type InvoiceChartData = {
+export type InvoiceChartData = {
   mes_ref: number
   ano_ref: number
   mes_ref_string: string
@@ -17,9 +18,7 @@ export function EnergyChart() {
     const response = await api.get(`http://localhost:3333/energy-per-month`)
 
     if (response.status === 200) {
-      // console.log(response.data)
       const formattedChartData = formatChartData(response.data)
-      // console.log(formattedChartData)
       setChartData(formattedChartData)
     }
   }, [])
@@ -28,24 +27,30 @@ export function EnergyChart() {
     fetchChartData()
   }, [fetchChartData])
 
-  function formatChartData(data: InvoiceChartData[]): InvoiceChartData[] {
-    const twelveMonthsAgo = new Date()
+  function formatChartData(
+    invoiceChartData: InvoiceChartData[],
+  ): InvoiceChartData[] {
+    const emptyChartData = getLast12MonthsChartData()
 
-    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12)
+    const filledData = emptyChartData.map((data) => {
+      const invoiceData = invoiceChartData.find(
+        (invoice) =>
+          invoice.mes_ref === data.mes_ref && invoice.ano_ref === data.ano_ref,
+      )
 
-    const last12MonthsData = data.filter((entry) => {
-      const entryDate = new Date(entry.ano_ref, entry.mes_ref - 1)
-      return entryDate >= twelveMonthsAgo
-    })
-
-    last12MonthsData.sort((a, b) => {
-      if (a.ano_ref !== b.ano_ref) {
-        return a.ano_ref - b.ano_ref
+      if (invoiceData) {
+        return {
+          ...data,
+          valor_total: invoiceData.valor_total,
+        }
       }
-      return a.mes_ref - b.mes_ref
+
+      return data
     })
 
-    return last12MonthsData
+    console.log(filledData)
+
+    return filledData
   }
 
   return (
@@ -63,7 +68,7 @@ export function EnergyChart() {
             <stop offset="95%" stopColor="#3294F8" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <XAxis dataKey="mes_ref_string" />
+        <XAxis fontSize={12} dataKey="mes_ref_string" />
         <YAxis />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />

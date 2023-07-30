@@ -22,8 +22,6 @@ export function Card({ energyType, selectedMonth, selectedYear }: CardProps) {
       invoice.mes_ref === selectedMonth && invoice.ano_ref === selectedYear,
   )
 
-  console.log(filteredInvoices)
-
   const getCardData = () => {
     switch (energyType) {
       case 'generated':
