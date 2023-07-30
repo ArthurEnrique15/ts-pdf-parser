@@ -13,12 +13,14 @@ class InvoiceService {
 
   async create(buffer: Buffer): Promise<Invoice> {
     const text = await PdfParser.parse(buffer)
-    // TODO adicionar o nome do UC
+
     const invoiceData = InvoiceFormatter.format(text)
 
     const {
       numero_cliente,
+      mes_ref_string,
       mes_ref,
+      ano_ref,
       data_vencimento,
       energia_eletrica,
       energia_injetada,
@@ -30,7 +32,9 @@ class InvoiceService {
     const invoice = await this.prismaClient.invoice.create({
       data: {
         numero_cliente,
+        mes_ref_string,
         mes_ref,
+        ano_ref,
         data_vencimento: new Date(data_vencimento),
         energia_eletrica_kwh: energia_eletrica.kwh,
         energia_eletrica_preco_unit: energia_eletrica.preco_unit,

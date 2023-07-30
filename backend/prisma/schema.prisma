@@ -13,7 +13,9 @@ datasource db {
 model Invoice {
   id                          String   @id @default(uuid())
   numero_cliente              String
-  mes_ref                     String
+  mes_ref_string              String
+  mes_ref                     Int
+  ano_ref                     Int
   data_vencimento             DateTime
   energia_eletrica_kwh        Int?
   energia_eletrica_preco_unit Float?

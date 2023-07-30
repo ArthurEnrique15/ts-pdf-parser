@@ -6,7 +6,9 @@ type Energy = {
 
 type Invoice = {
   numero_cliente: string
-  mes_ref: string
+  mes_ref_string: string
+  mes_ref: number
+  ano_ref: number
   data_vencimento: string
   energia_eletrica: Energy
   energia_injetada: Energy
@@ -15,7 +17,13 @@ type Invoice = {
   valor_total: number
 }
 
-type MatchInvoiceResponse = { numero_cliente: string; mes_ref: string; data_vencimento: string }
+type MatchInvoiceResponse = {
+  numero_cliente: string
+  mes_ref_string: string
+  mes_ref: number
+  ano_ref: number
+  data_vencimento: string
+}
 
 type MatchEnergiesResponse = {
   energia_eletrica: Invoice['energia_eletrica']
@@ -25,8 +33,6 @@ type MatchEnergiesResponse = {
 
 class InvoiceFormatter {
   format(input: string): Invoice {
-    // console.log(input)
-
     const invoiceMatch = this.matchInvoice(input)
     const energiesMatches = this.matchEnergies(input)
 
@@ -36,8 +42,6 @@ class InvoiceFormatter {
       contrib_ilum_publica: this.matchContribIlumPublica(input),
       valor_total: this.matchValorTotal(input),
     }
-
-    console.log(invoice)
 
     return invoice
   }
@@ -51,16 +55,51 @@ class InvoiceFormatter {
     if (!invoiceMatch) {
       return {
         numero_cliente: '',
-        mes_ref: '',
+        mes_ref_string: '',
+        mes_ref: 0,
+        ano_ref: 0,
         data_vencimento: '',
       }
     }
 
+    const { mes_ref, ano_ref } = this.formatDateString(invoiceMatch[3])
+
     return {
       numero_cliente: invoiceMatch[1],
-      mes_ref: invoiceMatch[3],
+      mes_ref_string: invoiceMatch[3],
       data_vencimento: invoiceMatch[4],
+      mes_ref,
+      ano_ref,
     }
+  }
+
+  private formatDateString(dataString: string): { mes_ref: number; ano_ref: number } {
+    const months = {
+      JAN: 1,
+      FEV: 2,
+      MAR: 3,
+      ABR: 4,
+      MAI: 5,
+      JUN: 6,
+      JUL: 7,
+      AGO: 8,
+      SET: 9,
+      OUT: 10,
+      NOV: 11,
+      DEZ: 12,
+    }
+
+    const [monthString, yearString] = dataString.split('/')
+
+    const mes_ref = months[monthString as keyof typeof months]
+
+    const ano_ref = parseInt(yearString)
+
+    if (isNaN(mes_ref) || isNaN(ano_ref)) {
+      return { mes_ref: 0, ano_ref: 0 }
+    }
+
+    return { mes_ref, ano_ref }
   }
 
   private matchEnergies(input: string): MatchEnergiesResponse {

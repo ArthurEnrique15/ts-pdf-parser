@@ -2,7 +2,9 @@
 CREATE TABLE "Invoice" (
     "id" TEXT NOT NULL,
     "numero_cliente" TEXT NOT NULL,
-    "mes_ref" TEXT NOT NULL,
+    "mes_ref_string" TEXT NOT NULL,
+    "mes_ref" INTEGER NOT NULL,
+    "ano_ref" INTEGER NOT NULL,
     "data_vencimento" TIMESTAMP(3) NOT NULL,
     "energia_eletrica_kwh" INTEGER,
     "energia_eletrica_preco_unit" DOUBLE PRECISION,
