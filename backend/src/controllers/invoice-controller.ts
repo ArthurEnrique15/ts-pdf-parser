@@ -33,6 +33,12 @@ class InvoiceController {
 
     return response.sendFile(filePath)
   }
+
+  async getAmountPerMonth(request: Request, response: Response) {
+    const result = await InvoiceService.getAmountPerMonth()
+
+    return response.status(200).json(result)
+  }
 }
 
 export default new InvoiceController()

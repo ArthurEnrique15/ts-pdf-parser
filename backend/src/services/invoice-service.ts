@@ -4,6 +4,13 @@ import path from 'path'
 import PdfParser from '../helpers/pdf-parser'
 import InvoiceFormatter from '../helpers/invoice-formatter'
 
+type AmountPerMonth = {
+  mes_ref: number
+  ano_ref: number
+  mes_ref_string: string
+  valor_total: number
+}
+
 class InvoiceService {
   private prismaClient: PrismaClient
 
@@ -74,6 +81,24 @@ class InvoiceService {
     } catch (err) {
       return null
     }
+  }
+
+  async getAmountPerMonth(): Promise<AmountPerMonth[]> {
+    const result = await this.prismaClient.invoice.groupBy({
+      by: ['mes_ref_string', 'mes_ref', 'ano_ref'],
+      _sum: { valor_total: true },
+    })
+
+    const formattedResult = result.map((item) => {
+      return {
+        mes_ref: item.mes_ref,
+        ano_ref: item.ano_ref,
+        mes_ref_string: item.mes_ref_string,
+        valor_total: item._sum.valor_total,
+      }
+    })
+
+    return formattedResult
   }
 }
 
