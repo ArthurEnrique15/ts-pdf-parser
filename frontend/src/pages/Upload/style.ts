@@ -14,7 +14,7 @@ export const UploadContainer = styled.div`
   color: ${({ theme }) => theme['base-span']};
 
   input {
-    width: 40%;
+    width: 25%;
   }
 
   button {
