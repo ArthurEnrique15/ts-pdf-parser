@@ -57,6 +57,10 @@ class InvoiceService {
       },
     })
 
+    if (!fs.existsSync(path.join(__dirname, '../tmp'))) {
+      fs.mkdirSync(path.join(__dirname, '../tmp'))
+    }
+
     fs.appendFileSync(path.join(__dirname, `../tmp/${invoice.id}.pdf`), buffer)
 
     return invoice
