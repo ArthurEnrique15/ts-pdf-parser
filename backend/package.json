@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "ts-node-dev --transpile-only src/server.ts",
-    "build": "swc ./src -d ./dist && node ./dist/server.js"
+    "build": "swc ./src -d ./dist",
+    "start": "node ./dist/server.js"
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
