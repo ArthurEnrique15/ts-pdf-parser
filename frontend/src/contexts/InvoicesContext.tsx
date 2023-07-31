@@ -49,6 +49,7 @@ interface InvoicesContextType {
   fetchInvoices(): Promise<void>
   getYears(): number[]
   formatToTable(yearFilter: number): InvoiceTable[]
+  addInvoice(invoice: Invoice): void
 }
 
 interface InvoicesProviderProps {
@@ -127,9 +128,13 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
     return table
   }
 
+  const addInvoice = async (invoice: Invoice) => {
+    setInvoices([...invoices, invoice])
+  }
+
   return (
     <InvoicesContext.Provider
-      value={{ invoices, fetchInvoices, getYears, formatToTable }}
+      value={{ invoices, fetchInvoices, getYears, formatToTable, addInvoice }}
     >
       {children}
     </InvoicesContext.Provider>

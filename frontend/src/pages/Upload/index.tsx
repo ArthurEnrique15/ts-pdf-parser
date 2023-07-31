@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { UploadContainer } from './style'
 import { api } from '../../lib/axios'
+import { InvoicesContext } from '../../contexts/InvoicesContext'
 
 export function Upload() {
   const [isFileSelected, setIsFileSelected] = useState(false)
+
+  const { addInvoice } = useContext(InvoicesContext)
 
   const handleSelectFile = () => {
     setIsFileSelected(true)
@@ -19,14 +22,17 @@ export function Upload() {
     const formData = new FormData()
     formData.append('pdfFile', file)
 
-    api.post(`${import.meta.env.VITE_SERVER_URL}/`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await api.post(
+      `${import.meta.env.VITE_SERVER_URL}/`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
-    })
+    )
 
-    setIsFileSelected(false)
-    fileInput.value = ''
+    addInvoice(response.data)
 
     alert('Arquivo enviado com sucesso!')
 
