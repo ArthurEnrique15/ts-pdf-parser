@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import InvoiceService from '../services/invoice-service'
+import InvoiceService from '../../services/invoice-service'
+import { makeAddInvoice } from '../factories/use-cases/add-invoice'
 
 class InvoiceController {
   async create(request: Request, response: Response) {
@@ -7,7 +8,9 @@ class InvoiceController {
       return response.status(400).json({ error: 'Nenhum arquivo recebido.' })
     }
 
-    const createdInvoice = await InvoiceService.create(request.file.buffer)
+    const addInvoice = makeAddInvoice()
+
+    const createdInvoice = await addInvoice.add(request.file.buffer)
 
     return response.status(201).json(createdInvoice)
   }

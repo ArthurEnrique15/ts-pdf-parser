@@ -3,6 +3,8 @@ module.exports = {
   // plugins: ['simple-import-sort'],
   rules: {
     camelcase: 'off',
+    '@typescript-eslint/no-namespace': 'off',
+    'no-useless-constructor': 'off',
     'prettier/prettier': [
       'error',
       {
