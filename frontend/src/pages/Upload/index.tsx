@@ -13,6 +13,8 @@ export function Upload() {
   }
 
   const handleSendFile = async () => {
+    setIsFileSelected(false)
+
     const fileInput = document.getElementById('pdfInput') as HTMLInputElement
 
     if (!fileInput || !fileInput.files) return
