@@ -8,7 +8,7 @@ const config: Config = {
   testEnvironment: 'node',
   testMatch: ['**/*.spec.ts'],
   transform: {
-    '^.+\\.(t|j)sx?$': '@swc/jest',
+    '^.+\\.(t|j)sx?$': ['@swc/jest', { configFile: '.swcrc.tests.json' }],
   },
 }
 
