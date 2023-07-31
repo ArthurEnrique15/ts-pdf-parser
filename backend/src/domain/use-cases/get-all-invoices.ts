@@ -1,5 +1,5 @@
 import { InvoiceModel } from '../models/Invoice'
 
-export interface IGetInvoices {
-  getAllInvoices(): Promise<InvoiceModel[]>
+export interface IGetAllInvoices {
+  getAll(): Promise<InvoiceModel[]>
 }

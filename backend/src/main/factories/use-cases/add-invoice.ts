@@ -8,8 +8,8 @@ import { makeInvoiceFormatter } from '../helpers/invoice-formatter'
 export function makeAddInvoice(): IAddInvoice {
   const fileParser = makeFileParser()
   const invoiceFormatter = makeInvoiceFormatter()
-  const addInvoiceRepository = makeInvoiceRepository()
+  const invoiceRepository = makeInvoiceRepository()
   const fileManager = makeFileManager()
 
-  return new AddInvoice(fileParser, invoiceFormatter, addInvoiceRepository, fileManager)
+  return new AddInvoice(fileParser, invoiceFormatter, invoiceRepository, fileManager)
 }
