@@ -56,10 +56,13 @@ export function InvoicesHistory() {
     month,
   }: DownloadClickProps) => {
     try {
-      const response = await api.get('http://localhost:3333/download', {
-        headers: { id },
-        responseType: 'blob',
-      })
+      const response = await api.get(
+        `${import.meta.env.VITE_SERVER_URL}/download`,
+        {
+          headers: { id },
+          responseType: 'blob',
+        },
+      )
 
       const blob = new Blob([response.data], { type: 'application/pdf' })
 

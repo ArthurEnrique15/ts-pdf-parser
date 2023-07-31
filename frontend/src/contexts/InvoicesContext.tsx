@@ -61,7 +61,7 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
   const [invoices, setInvoices] = useState<Invoice[]>([])
 
   const fetchInvoices = useCallback(async () => {
-    const response = await api.get(`http://localhost:3333/`)
+    const response = await api.get(`${import.meta.env.VITE_SERVER_URL}/`)
 
     if (response.status === 200) {
       setInvoices(response.data)

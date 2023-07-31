@@ -19,8 +19,7 @@ export function Upload() {
     const formData = new FormData()
     formData.append('pdfFile', file)
 
-    // await api.post('http://localhost:3333/', { data: file })
-    api.post('http://localhost:3333/', formData, {
+    api.post(`${import.meta.env.VITE_SERVER_URL}/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

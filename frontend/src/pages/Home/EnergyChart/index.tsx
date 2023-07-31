@@ -15,7 +15,9 @@ export function EnergyChart() {
   const [chartData, setChartData] = useState<InvoiceChartData[]>([])
 
   const fetchChartData = useCallback(async () => {
-    const response = await api.get(`http://localhost:3333/energy-per-month`)
+    const response = await api.get(
+      `${import.meta.env.VITE_SERVER_URL}/energy-per-month`,
+    )
 
     if (response.status === 200) {
       const formattedChartData = formatChartData(response.data)
