@@ -4,9 +4,15 @@ import { FormattedInvoice } from '../../data/protocols/dtos/invoice'
 import { InvoiceModel } from '../../domain/models/Invoice'
 import { IFindAllInvoicesRepository } from '../../data/protocols/database/invoice/find-all'
 import { IFindInvoiceByIdRepository } from '../../data/protocols/database/invoice/find-by-id'
+import { IGetTotalValuePerMonthInvoiceRepository } from '../../data/protocols/database/invoice/get-total-value-per-month'
+import { ValuePerMonth } from '../../domain/use-cases/get-total-value-per-month'
 
 export class InvoiceRepository
-  implements IAddInvoiceRepository, IFindAllInvoicesRepository, IFindInvoiceByIdRepository
+  implements
+    IAddInvoiceRepository,
+    IFindAllInvoicesRepository,
+    IFindInvoiceByIdRepository,
+    IGetTotalValuePerMonthInvoiceRepository
 {
   private prismaClient: PrismaClient
 
@@ -60,5 +66,23 @@ export class InvoiceRepository
   async findById(id: string): Promise<InvoiceModel> {
     const invoice = await this.prismaClient.invoice.findUnique({ where: { id } })
     return invoice
+  }
+
+  async getTotalValuePerMonth(): Promise<ValuePerMonth[]> {
+    const result = await this.prismaClient.invoice.groupBy({
+      by: ['mes_ref_string', 'mes_ref', 'ano_ref'],
+      _sum: { valor_total: true },
+    })
+
+    const formattedResult = result.map((item) => {
+      return {
+        mes_ref: item.mes_ref,
+        ano_ref: item.ano_ref,
+        mes_ref_string: item.mes_ref_string,
+        valor_total: item._sum.valor_total,
+      }
+    })
+
+    return formattedResult
   }
 }

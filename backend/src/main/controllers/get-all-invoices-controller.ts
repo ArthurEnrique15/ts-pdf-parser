@@ -6,6 +6,6 @@ export class GetAllInvoicesController {
 
   async getAll(request: Request, response: Response) {
     const invoices = await this.getInvoicesUseCase.getAll()
-    return response.status(200).json(invoices).send()
+    return response.status(200).json(invoices)
   }
 }
