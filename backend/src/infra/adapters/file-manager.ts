@@ -7,11 +7,24 @@ export class FileManager implements IFileManager {
     return fs.existsSync(path.join(__dirname, folderPath))
   }
 
+  checkIfFileExists(filePath: string): boolean {
+    try {
+      fs.accessSync(path.join(__dirname, filePath))
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   createFolder(folderPath: string): void {
     fs.mkdirSync(path.join(__dirname, folderPath))
   }
 
   createFile(filePath: string, fileContent: Buffer): void {
     fs.appendFileSync(path.join(__dirname, filePath), fileContent)
+  }
+
+  getFilePath(filePath: string): string {
+    return path.join(__dirname, filePath)
   }
 }

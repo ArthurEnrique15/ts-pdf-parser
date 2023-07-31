@@ -3,8 +3,11 @@ import { IAddInvoiceRepository } from '../../data/protocols/database/invoice/cre
 import { FormattedInvoice } from '../../data/protocols/dtos/invoice'
 import { InvoiceModel } from '../../domain/models/Invoice'
 import { IFindAllInvoicesRepository } from '../../data/protocols/database/invoice/find-all'
+import { IFindInvoiceByIdRepository } from '../../data/protocols/database/invoice/find-by-id'
 
-export class InvoiceRepository implements IAddInvoiceRepository, IFindAllInvoicesRepository {
+export class InvoiceRepository
+  implements IAddInvoiceRepository, IFindAllInvoicesRepository, IFindInvoiceByIdRepository
+{
   private prismaClient: PrismaClient
 
   constructor() {
@@ -52,5 +55,10 @@ export class InvoiceRepository implements IAddInvoiceRepository, IFindAllInvoice
   async findAll(): Promise<InvoiceModel[]> {
     const invoices = await this.prismaClient.invoice.findMany()
     return invoices
+  }
+
+  async findById(id: string): Promise<InvoiceModel> {
+    const invoice = await this.prismaClient.invoice.findUnique({ where: { id } })
+    return invoice
   }
 }
