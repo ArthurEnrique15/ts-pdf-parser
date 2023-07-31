@@ -29,6 +29,8 @@ export function Upload() {
     fileInput.value = ''
 
     alert('Arquivo enviado com sucesso!')
+
+    window.location.href = '/'
   }
 
   return (
