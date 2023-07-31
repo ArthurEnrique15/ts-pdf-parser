@@ -6,7 +6,7 @@ export class FileManager implements IFileManager {
   checkIfFileExists(fileName: string): boolean {
     const filePath = path.join(__dirname, `../../tmp/${fileName}.pdf`)
     try {
-      fs.accessSync(path.join(__dirname, filePath))
+      fs.accessSync(filePath)
       return true
     } catch (error) {
       return false
