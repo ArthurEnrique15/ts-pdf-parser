@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import multer from 'multer'
-import InvoiceController from '../controllers/invoice-controller'
-import { makeAddInvoiceController } from '../factories/controllers/add-invoice-controller'
+import InvoiceController from './controllers/invoice-controller'
+import { makeAddInvoiceController } from './factories/controllers/add-invoice-controller'
 
 const router = Router()
 
