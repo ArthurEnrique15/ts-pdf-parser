@@ -15,12 +15,12 @@ export class DownloadInvoice implements IDownloadInvoice {
       throw new Error('Fatura não encontrada')
     }
 
-    const fileExists = this.fileManager.checkIfFileExists(`../../tmp/${id}.pdf`)
+    const fileExists = this.fileManager.checkIfFileExists(id)
 
     if (!fileExists) {
       throw new Error('Arquivo não encontrado')
     }
 
-    return this.fileManager.getFilePath(`../../tmp/${id}.pdf`)
+    return this.fileManager.getFilePath(id)
   }
 }

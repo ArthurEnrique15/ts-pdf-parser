@@ -3,7 +3,8 @@ import fs from 'fs'
 import path from 'path'
 
 export class FileManager implements IFileManager {
-  checkIfFileExists(filePath: string): boolean {
+  checkIfFileExists(fileName: string): boolean {
+    const filePath = path.join(__dirname, `../../tmp/${fileName}.pdf`)
     try {
       fs.accessSync(path.join(__dirname, filePath))
       return true
@@ -33,7 +34,7 @@ export class FileManager implements IFileManager {
     fs.mkdirSync(folderPath)
   }
 
-  getFilePath(filePath: string): string {
-    return path.join(__dirname, filePath)
+  getFilePath(fileName: string): string {
+    return path.join(__dirname, `../../tmp/${fileName}.pdf`)
   }
 }

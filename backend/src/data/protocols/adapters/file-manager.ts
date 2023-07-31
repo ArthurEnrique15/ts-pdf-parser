@@ -1,5 +1,5 @@
 export interface IFileManager {
-  checkIfFileExists(filePath: string): boolean
-  createFile(filePath: string, fileContent: Buffer): void
-  getFilePath(filePath: string): string
+  checkIfFileExists(fileName: string): boolean
+  createFile(fileName: string, fileContent: Buffer): void
+  getFilePath(fileName: string): string
 }
