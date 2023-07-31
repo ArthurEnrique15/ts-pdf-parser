@@ -3,10 +3,6 @@ import fs from 'fs'
 import path from 'path'
 
 export class FileManager implements IFileManager {
-  checkIfFolderExists(folderPath: string): boolean {
-    return fs.existsSync(path.join(__dirname, folderPath))
-  }
-
   checkIfFileExists(filePath: string): boolean {
     try {
       fs.accessSync(path.join(__dirname, filePath))
@@ -16,12 +12,25 @@ export class FileManager implements IFileManager {
     }
   }
 
-  createFolder(folderPath: string): void {
-    fs.mkdirSync(path.join(__dirname, folderPath))
+  createFile(fileName: string, fileContent: Buffer): void {
+    const tmpFolderPath = path.join(__dirname, '../../tmp')
+
+    const tmpFolderExists = this.checkIfFolderExists(tmpFolderPath)
+
+    if (!tmpFolderExists) {
+      this.createFolder(tmpFolderPath)
+    }
+
+    const filePath = path.join(__dirname, `../../tmp/${fileName}.pdf`)
+    fs.appendFileSync(filePath, fileContent)
   }
 
-  createFile(filePath: string, fileContent: Buffer): void {
-    fs.appendFileSync(path.join(__dirname, filePath), fileContent)
+  private checkIfFolderExists(folderPath: string): boolean {
+    return fs.existsSync(folderPath)
+  }
+
+  private createFolder(folderPath: string): void {
+    fs.mkdirSync(folderPath)
   }
 
   getFilePath(filePath: string): string {

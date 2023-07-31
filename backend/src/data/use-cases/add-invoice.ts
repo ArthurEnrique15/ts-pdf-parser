@@ -20,18 +20,8 @@ export class AddInvoice implements IAddInvoice {
 
     const invoice = await this.addInvoiceRepository.add(formattedInvoice)
 
-    this.saveFile(invoice.id, invoiceBuffer)
+    this.fileManager.createFile(invoice.id, invoiceBuffer)
 
     return invoice
-  }
-
-  private saveFile(fileName: string, buffer: Buffer) {
-    const tmpFolderExists = this.fileManager.checkIfFolderExists('../../tmp')
-
-    if (!tmpFolderExists) {
-      this.fileManager.createFolder('../../tmp')
-    }
-
-    this.fileManager.createFile(`../../tmp/${fileName}.pdf`, buffer)
   }
 }
